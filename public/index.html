@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>多人聊天室</title>
+  <link href="//cdn.bootcss.com/normalize/3.0.3/normalize.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="pages">
+
+    <div class="chat page">
+
+      <div class="chatArea">
+
+        <ul class="messages"></ul>
+
+      </div>
+
+      <input class="inputMessage" placeholder="在此输入..." />
+
+    </div>
+
+    <div class="login page">
+
+      <div class="form">
+        <h3 class="title">您将要使用的昵称？</h3>
+        <label>
+          <input class="usernameInput" type="text" maxlength="14" value="Anonymous">
+        </label>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script id="messageOthers" type="text/html">
+    <li class="message{{typing?' typing':''}}">
+      <div class="avatar-others">
+        <img class="avatar" src={{ "http://api.adorable.io/avatar/80/"+username}}>
+      </div>
+      <div class="message-others">
+        <div class="bubble-others">{{message}}</div>
+      </div>
+    </li>
+  </script>
+
+  <script id="messageMe" type="text/html">
+    <li class="message{{typing?' typing':''}}">
+      <div class="avatar-me">
+        <img class="avatar" src={{ "http://api.adorable.io/avatar/80/"+username}}>
+      </div>
+      <div class="message-me">
+        <div class="bubble-me">{{message}}</div>
+      </div>
+    </li>
+  </script>
+
+  <script src="//cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/lib/template.js"></script>
+  <script src="/main.js"></script>
+</body>
+
+</html>
