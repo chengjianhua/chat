@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
   localStorage.debug = false;
 
   var FADE_TIME = 150; // ms
@@ -93,7 +93,7 @@ $(function () {
 
   // 移除 [正在输入……] 的提示信息
   function removeChatTyping(data) {
-    getTypingMessages(data).fadeOut(function () {
+    getTypingMessages(data).fadeOut(function() {
       $(this).remove();
     });
   }
@@ -149,7 +149,7 @@ $(function () {
       }
       lastTypingTime = (new Date()).getTime();
 
-      setTimeout(function () {
+      setTimeout(function() {
         var typingTimer = (new Date()).getTime();
         var timeDiff = typingTimer - lastTypingTime;
         if (timeDiff >= TYPING_TIMER_LENGTH && typing) {
@@ -166,20 +166,19 @@ $(function () {
    * @returns {Array.<T>|*|jQuery}
    */
   function getTypingMessages(data) {
-    return $('.typing.message').filter(function () {
+    return $('.typing.message').filter(function() {
       return $(this).data('username') !== data.username;
     });
   }
 
-  // Keyboard events
-  $window.keydown(function (event) {
+  $window.keydown(function(event) {
 
-    // Auto-focus the current input when a key is typed
+    // 当键入一个按键的时候，当前的属输入框自动获得焦点
     if (!(event.ctrlKey || event.metaKey || event.altKey)) {
       $currentInput.focus();
     }
 
-    // When the client hits ENTER on their keyboard
+    // 当用户键入 “Enter” 键的时候
     if (event.which === 13) {
       if (username) {
         sendMessage();
@@ -191,26 +190,26 @@ $(function () {
     }
   });
 
-  $inputMessage.on('input', function () {
+  $inputMessage.on('input', function() {
     updateTyping();
   });
 
-  // Click events
+  // 点击事件
 
-  // Focus input when clicking anywhere on login page
-  $loginPage.click(function () {
+  // 当点击登录页面时，
+  $loginPage.click(function() {
     $currentInput.focus();
   });
 
-  // Focus input when clicking on the message input's border
-  $inputMessage.click(function () {
+  // 当点击输入消息的框的时候，消息输入框获取焦点
+  $inputMessage.click(function() {
     $inputMessage.focus();
   });
 
-  // Socket events
+  // socket 事件
 
-  // Whenever the server emits 'login', log the login message
-  socket.on('login', function (data) {
+  // 当服务器触发 “login” 事件的时候执行以下操作
+  socket.on('login', function(data) {
     connected = true;
     // Display the welcome message
     var message = "欢迎来到聊天室";
@@ -220,31 +219,31 @@ $(function () {
     addParticipantsMessage(data);
   });
 
-  // Whenever the server emits 'new message', update the chat body
-  socket.on('new message', function (data) {
+  // 当服务器触发 “new message” 事件的时候，添加消息内容到页面中
+  socket.on('new message', function(data) {
     addChatMessage(data);
   });
 
-  // Whenever the server emits 'user joined', log it in the chat body
-  socket.on('user joined', function (data) {
+  // 当服务器触发 “user joined” 事件的时候，记录并输出到页面中
+  socket.on('user joined', function(data) {
     log(data.username + ' 已加入');
     addParticipantsMessage(data);
   });
 
-  // Whenever the server emits 'user left', log it in the chat body
-  socket.on('user left', function (data) {
+  // 当服务器触发 “user left” 事件的时候，记录并显示退出了的用户信息
+  socket.on('user left', function(data) {
     log(data.username + ' 已离开');
     addParticipantsMessage(data);
     removeChatTyping(data);
   });
 
-  // Whenever the server emits 'typing', show the typing message
-  socket.on('typing', function (data) {
+  // 当服务器触发 “typing” 事件的时候，为当前正在输入的用户添加“正在输入……”的气泡
+  socket.on('typing', function(data) {
     addChatTyping(data);
   });
 
-  // Whenever the server emits 'stop typing', kill the typing message
-  socket.on('stop typing', function (data) {
+  // 当服务器触发 “stop typing” 事件的时候，为当前正在输入的用户添加“正在输入……”的气泡
+  socket.on('stop typing', function(data) {
     removeChatTyping(data);
   });
 
